@@ -41,3 +41,9 @@ module.exports.Connection = Connection;
 // dbURI = `mongodb+srv://<username>:<password>@sonuproject.hdiyklc.mongodb.net/?retryWrites=true&w=majority`
 // username = 'sonu'
 // password = 'mdshahbazwarish1996'
+
+
+// git branch -m main master
+// git fetch origin
+// git branch -u origin/master master
+// git remote set-head origin -a
