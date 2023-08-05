@@ -1,11 +1,21 @@
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
 
+const database_username = "yuvapragatipvt"
+const database_password = "3Pp1CRyz61ipcKt4"
+const database_name = "yuvapragati"
+
+
+
+
+
 const Connection = async function () {
   try {
     await mongoose
       .connect(
-        `mongodb+srv://sonu:mdshahbazwarish1996@sonuproject.hdiyklc.mongodb.net/network_marketing?retryWrites=true&w=majority`,
+        // `mongodb+srv://sonu:mdshahbazwarish1996@sonuproject.hdiyklc.mongodb.net/network_marketing?retryWrites=true&w=majority`,
+        // `mongodb+srv://yuvapragatipvt:3Pp1CRyz61ipcKt4@cluster0.1ofzyho.mongodb.net/yuvapragati`,
+        `mongodb+srv://${database_username}:${database_password}@cluster0.1ofzyho.mongodb.net/${database_name}`,
         {
           useNewUrlParser: true,
           useUnifiedTopology: true,
