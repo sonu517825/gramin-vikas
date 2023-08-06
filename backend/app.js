@@ -25,10 +25,10 @@ mongoDB.Connection();
 app.use("/api", indexRouter);
 
 app.get("/", (req, res) => {
-  res.status(200).send("App is working...");
+  res.status(200).send("Gramin vikash App is working...");
 });
 
 app.get("*", (req, res) => {
-  res.status(404).send("Route not found...");
+  res.status(404).send("Gramin vikash Route not found...");
 });
 module.exports = app;
