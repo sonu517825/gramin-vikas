@@ -1,15 +1,14 @@
-
 import {
   Button,
   Card,
   Form,
   Input,
+  message, Space
 } from "antd";
-import { useState } from "react";
+import { useState } from 'react';
 import axios from "axios";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../config/config'
-
 
 const formItemLayout = {
   labelCol: {
@@ -31,62 +30,45 @@ const formItemLayout = {
 };
 
 const Register = () => {
+
   const navigate = useNavigate();
   const [sponcerToggle, setSponcerToggle] = useState(false);
-
   const [sponcerId, setSponcerId] = useState("");
   const [errorHandle, setErrorHandle] = useState(false);
-
-
-  const [registerObj, setRegisterObj] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [form] = Form.useForm();
-
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    setRegisterObj(values);
-  };
-
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
-
   const setSponcerIdHandler = (e) => {
     setErrorHandle(false);
     setSponcerId(e.target.value);
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  }
+  const onFinish = (values) => {
+    const { sponcer_id } = values;
 
-  const submitSponcerHandler = () => {
-    console.log("Received SponcerId Handler : ", sponcerId);
-    if (sponcerId != "") {
-      axios.post(
-        `${BASE_URL}/api/user/valid_sponcer_id`,
-        {
-          refer_sponcer_id: sponcerId,
-        }
-      )
-        .then((result) => {
-          console.log(result.data);
-
-          setSponcerToggle(true);
-        })
-        .catch((error) => {
-          setErrorHandle(true);
-        });
+    if (!sponcer_id) {
+      setErrorHandle(true);
+      return;
     }
-    setIsModalOpen(true);
+
+    axios.post(
+      `${BASE_URL}/api/user/valid_sponcer_id`,
+      {
+        refer_sponcer_id: sponcer_id,
+      }
+    )
+      .then((result) => {
+        console.log(result.data);
+        setSponcerToggle(true);
+        setErrorHandle(false);
+      })
+      .catch((error) => {
+        setErrorHandle(true);
+      });
   };
+
 
   return (
     <div className="w-full flex justify-center items-center  min-h-[100vh] bg-[#ffd6e7]">
-      <Card style={{ boxShadow: "20px" }}>
+      <Card style={{ boxShadow: "20px", width: "480px" }}>
         <Form
           {...formItemLayout}
           form={form}
@@ -101,24 +83,20 @@ const Register = () => {
             alignItems: "center",
             flexDirection: "column",
           }}
-          scrollToFirstError
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
+          scrollToFirstError
         >
           {!sponcerToggle ? (
             <>
-              <h1 className="text-center mb-3 text-[green] ">
+              <h1 className="text-center mb-3 text-[green] font-bold text-2xl">
                 Verify Sponcer ID
               </h1>
-              <div className=" w-[100%] min-w-[400px] h-[40px] flex justify-around  content-start ">
+              <div className="flex items-center mr-[20px]">
                 <Form.Item
                   name="sponcer_id"
-                  label={<h6 className="mb-2 font-med">Sponcer ID :</h6>}
+                  label={<h1 className="font-bold text-1xl">Sponcer ID</h1>}
+                  className="flex gap-4"
                   rules={[
-                    {
-                      type: "name",
-                      message: "The input is not valid Sponcer ID !",
-                    },
                     {
                       required: true,
                       message: (
@@ -128,39 +106,32 @@ const Register = () => {
                       ),
                     },
                   ]}
-                  hasFeedback
+                  validateTrigger="onBlur"
                 >
                   <Input
-                    type="primary"
-                    className="w-[170px] ml-2"
+                    className=""
                     onChange={setSponcerIdHandler}
                   />
                 </Form.Item>
                 <Button
-                  onClick={submitSponcerHandler}
-                  className="bg-[blue] text-white mb-4 "
                   htmlType="submit"
+                  className="text-white ml-[20px] mb-[20px] "
+                  type="primary"
                 >
                   Verify
                 </Button>
-                {/* <Button
-                  onClick={submitSponcerHandler}
-                  style={{ background: '#0070f3', color: 'white', marginBottom: '4px' }}
-                  htmlType="submit"
-                >
-                  Verify
-                </Button> */}
-
-
               </div>
               {errorHandle && (
-                <h5 className="text-[red] ">Invalid Sponcer ID !</h5>
+                <h5 className="text-red-500">Invalid Sponcer ID !</h5>
               )}
             </>
           ) : navigate('/register', { state: { refer_sponcer_id: sponcerId } })}
         </Form>
       </Card>
-    </div >
+    </div>
   );
-};
+}
+
 export default Register;
+
+
