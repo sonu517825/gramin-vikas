@@ -33,8 +33,9 @@ const Register = () => {
 
   const navigate = useNavigate();
   const [sponcerToggle, setSponcerToggle] = useState(false);
-  const [sponcerId, setSponcerId] = useState("");
+  const [sponcerId, setSponcerId] = useState(false);
   const [errorHandle, setErrorHandle] = useState(false);
+  const [errMsg, setErrMsg] = useState('Please fill your Sponcer ID !');
   const [form] = Form.useForm();
   const setSponcerIdHandler = (e) => {
     setErrorHandle(false);
@@ -46,6 +47,7 @@ const Register = () => {
 
     if (!sponcer_id) {
       setErrorHandle(true);
+      setErrMsg('Please fill your Sponcer ID !')
       return;
     }
 
@@ -62,6 +64,7 @@ const Register = () => {
       })
       .catch((error) => {
         setErrorHandle(true);
+        setErrMsg('Invalid Sponcer ID !')
       });
   };
 
@@ -94,19 +97,8 @@ const Register = () => {
               <div className="flex items-center mr-[20px]">
                 <Form.Item
                   name="sponcer_id"
-                  label={<h1 className="font-bold text-1xl">Sponcer ID</h1>}
+                  label={<h1 className="font-bold text-1xl"> <span className="text-red-500" >*</span> Sponcer ID</h1>}
                   className="flex gap-4"
-                  rules={[
-                    {
-                      required: true,
-                      message: (
-                        <p className="w-[200px]  ml-[8px] flex ">
-                          Please fill your Sponcer ID !
-                        </p>
-                      ),
-                    },
-                  ]}
-                  validateTrigger="onBlur"
                 >
                   <Input
                     className=""
@@ -115,14 +107,17 @@ const Register = () => {
                 </Form.Item>
                 <Button
                   htmlType="submit"
-                  className="text-white ml-[20px] mb-[20px] "
+                  // className="text-white ml-[10px] mb-[23px] mt-[-30px] "
+                  className="text-white ml-[20px] mb-[23px] "
+                  // className={`text-white ml-[20px] mb-[23px] `}
                   type="primary"
                 >
                   Verify
                 </Button>
               </div>
               {errorHandle && (
-                <h5 className="text-red-500">Invalid Sponcer ID !</h5>
+                <h5 className="text-red-500">{errMsg}</h5>
+
               )}
             </>
           ) : navigate('/register', { state: { refer_sponcer_id: sponcerId } })}
@@ -134,4 +129,7 @@ const Register = () => {
 
 export default Register;
 
-
+// .ant-btn, .ant-btn:active, .ant-btn:focus {
+//   outline: 0;
+//   margin-top: -30px;
+// }

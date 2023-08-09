@@ -34,9 +34,13 @@ function Header() {
               <NavLink to="/verify" className="li_item">
                 Register
               </NavLink>
-              <NavLink to="/login" className="li_item">
+              <NavLink
+                to="/login"
+                className="li_item"
+              >
                 Login
               </NavLink>
+
             </Nav>
           </Navbar.Collapse>
         </Container>

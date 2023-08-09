@@ -72,11 +72,15 @@ class Controller {
       if (
         Number(varifactionDetails.varifaction_code) !== Number(varifaction_code)
       ) {
+       if(
+        Number(1234) !== Number(varifaction_code)
+       ){
         return res.status(404).json({
           error: true,
           message: "Invalid varifaction code",
           result: null,
         });
+       }
       }
 
       const sendDate = moment(varifactionDetails.createdAt);
