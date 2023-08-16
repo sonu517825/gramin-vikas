@@ -15,7 +15,7 @@ function Home() {
                 <span className="">
                   <ImForward />
                 </span>
-                Network Marketing is a young emerging firm in the global
+                Yuva Pragati is a young emerging firm in the global
                 market providing independent platform for emerging leaders for
                 the field of service and management in this competitive market.
               </p>
@@ -24,7 +24,7 @@ function Home() {
               </span>
               <p>
                 {" "}
-                Network Marketing is a part of a global network that sells
+                Yuva Pragati is a part of a global network that sells
                 products and services on behalf of blue-chip companies.
               </p>
               <p>

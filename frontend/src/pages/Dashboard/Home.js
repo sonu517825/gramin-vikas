@@ -38,8 +38,8 @@ const Home = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('/dashboard');
   const location = useLocation();
-  const payload = location.state?.result;
-
+  // const payload = location.state?.result;
+  const [payload, setPayload] = useState(location.state?.result);
 
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
@@ -69,8 +69,8 @@ const Home = () => {
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
         <div>
-        {/* <span className="text-white font-bold text-4xl justify-center items-center ml-7 mt-[0px]">GV</span> */}
-        <span style={custom.span}>GV</span>
+          <span style={custom.span}>YP</span>
+
         </div>
         <Menu className="mt-[10px]" theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={handleDashboard}>
           <Menu.Item key="/dashboard" icon={<DashboardOutlined />}>
@@ -113,7 +113,7 @@ const Home = () => {
           <SubMenu key="10" icon={<UserOutlined />} title="My Account">
             <Menu.Item icon={<FundViewOutlined />} key="/dashboard/profile/view" >My Profile</Menu.Item>
             <Menu.Item icon={<EditOutlined />} key="/dashboard/profile/edit" >Edit Profile</Menu.Item>
-            <Menu.Item icon={<GiftOutlined />} key="/dashboard/profile/welcome">Welcome Letter</Menu.Item>
+            {/* <Menu.Item icon={<GiftOutlined />} key="/dashboard/profile/welcome">Welcome Letter</Menu.Item> */}
             <Menu.Item icon={<KeyOutlined />} key="/dashboard/profile/password/change">Change Password</Menu.Item>
           </SubMenu>
 
@@ -123,7 +123,9 @@ const Home = () => {
 
         </Menu>
       </Sider>
+
       <Layout className="site-layout">
+
         <Header className="site-layout-background" style={{ padding: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <h3 className="text-white text-2xl mt-2"> Welcome
@@ -135,7 +137,7 @@ const Home = () => {
 
         <Content style={{ margin: '0 16px' }}>
           {activeMenuItem === '/dashboard' && (
-            <Dashboard />
+            <Dashboard payload={payload} />
           )}
           {activeMenuItem === '/dashboard/team/view' && (
             <MyTeam />
@@ -173,7 +175,7 @@ const Home = () => {
           )}
         </Content>
 
-        <Footer style={{ textAlign: 'center' }}><span className='text-red-500 font-bold text-xl' >Copyright © 2023 Gramin Vikas. All rights reserved</span></Footer>
+        <Footer style={{ textAlign: 'center' }}><span className='text-red-500 font-bold text-xl' >Copyright © 2023 Yuva Pragati. All rights reserved</span></Footer>
 
       </Layout>
     </Layout>

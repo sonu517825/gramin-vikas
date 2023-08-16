@@ -43,7 +43,7 @@ const SuccessRegister = ({ message }) => {
                 <Button
                     style={{ backgroundColor: '#0074E4', color: 'white', marginLeft: '20px' }}
                     htmlType="submit"
-                    href="/register"
+                    href="/verify"
                 >
                     New Registration
                 </Button>

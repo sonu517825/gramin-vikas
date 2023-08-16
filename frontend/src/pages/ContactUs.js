@@ -28,7 +28,7 @@ const ContactUs = () => {
               <span>
                 <GoLocation className="text-2xl" />
               </span>
-              <p className="sm:text-xl">Network Marketing,Thamara tower</p>
+              <p className="sm:text-xl">Yuva Pragati,Thamara tower</p>
               <p className="sm:text-xl">3rd floor above hdfc bank</p>
               <p className="sm:text-xl">
                 Srinivasan nagar Vayaloor main road Trichy – 620017.
@@ -64,9 +64,9 @@ const ContactUs = () => {
       </div>
       {/* <div className="w-[100%] flex justify-center mt-[20px] flex-col "> */}
         <p className="flex justify-center text-xl font-sen mt-7 mb-4">
-          Network Marketing is a young emerging firm in the global market
+          Yuva Pragati is a young emerging firm in the global market
           providing independent platform for emerging leaders for the field of
-          service and management in this competitive market. Network Marketing
+          service and management in this competitive market. Yuva Pragati
           is one of the largest face to face advertising company
           working with multiple clients from the fortune 500 companies. We are
           part of Global network where already we have office in 32 country

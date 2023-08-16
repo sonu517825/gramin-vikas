@@ -9,11 +9,9 @@ import {
     Modal
 } from "antd";
 import { useState } from "react";
-import OTPInput from "react-otp-input";
-import Timer from "../../components/Timer";
 import axios from "axios";
 import { BASE_URL } from '../../config/config'
-import SuccessRegister from "../SuccessRegister";
+
 
 
 const formItemLayout = {
@@ -35,183 +33,45 @@ const formItemLayout = {
     },
 };
 
-const tailFormItemLayout = {
-    wrapperCol: {
-        xs: {
-            span: 24,
-            offset: 0,
-        },
-        sm: {
-            span: 16,
-            offset: 8,
-        },
-    },
-};
+
 
 const EditProfile = ({ message }) => {
-    // console.log(payload)
-    const [sponcerToggle, setSponcerToggle] = useState(false);
-    const [otpMobNo, setOtpMobNo] = useState("");
-    const [sponcerId, setSponcerId] = useState("");
-    const [errorHandle, setErrorHandle] = useState(false);
-    const [otpErrorMsg, setOtpErrorMsg] = useState("Enter Varifaction Code");
-    const [otp, setOtp] = useState("");
-    const [varifaction_code_id, setVarifaction_code_id] = useState("");
-    const [otpToggle, setOtpToggle] = useState(false);
     const [registerObj, setRegisterObj] = useState({});
-    const [timer, setTimer] = useState(90);
-    const [seconds, setSeconds] = useState(90);
+    const [resHandler, setResHandler] = useState(false);
+    const [color, setColor] = useState('red');
+    const [resMsg, setResMsg] = useState('Something went wrong !');
     const [form] = Form.useForm();
-    const [registerApiResponse, setRegisterApiResponse] = useState(null);
-    const [showSuccess, setShowSuccess] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
+
     const onFinish = (values) => {
         console.log("Success:", values);
         setRegisterObj(values);
+        update()
     };
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
     };
 
-    const showModal = () => {
-        setIsModalOpen(true);
+
+    const update = () => {
+        registerObj.my_sponcer_id = message.my_sponcer_id
+        axios.put(
+            `${BASE_URL}/api/user/update`,
+            registerObj
+        )
+            .then((result) => {
+                setColor('green')
+                setResHandler(true);
+                setResMsg('Record Updated Successfully')
+            })
+            .catch((error) => {
+                setResHandler(true);
+                setResMsg('Something went wrong !')
+            });
     };
-
-    const getVarifactionCode = () => {
-        if (registerObj?.phone || 1) {
-            console.log(registerObj.phone);
-            // setOtpMobNo(registerObj.phone);
-            axios.post(
-                `${BASE_URL}/api/user/get_varifaction_code`,
-                {
-                    // phone: registerObj.phone ,
-                    phone: '6387465973',
-                }
-            )
-                .then((result) => {
-                    console.log(result.data);
-
-                    setVarifaction_code_id(result.data?.varifaction_code_id);
-                    setOtpToggle(true);
-                })
-                .catch((error) => {
-                    console.log(error.response.data);
-                    setErrorHandle(true);
-                });
-        }
-    };
-
-    const [autoCompleteResult, setAutoCompleteResult] = useState([]);
-    const onWebsiteChange = (value) => {
-        if (!value) {
-            setAutoCompleteResult([]);
-        } else {
-            setAutoCompleteResult(
-                [".com", ".org", ".net"].map((domain) => `${value}${domain}`)
-            );
-        }
-    };
-    const websiteOptions = autoCompleteResult.map((website) => ({
-        label: website,
-        value: website,
-    }));
-
-    const setSponcerIdHandler = (e) => {
-        setErrorHandle(false);
-        setSponcerId(e.target.value);
-    };
-
-    const submitSponcerHandler = () => {
-        console.log("Received SponcerId Handler : ", sponcerId, BASE_URL);
-        if (sponcerId != "") {
-            axios.post(
-                `${BASE_URL}/api/user/valid_sponcer_id`,
-                {
-                    refer_sponcer_id: sponcerId,
-                }
-            )
-                .then((result) => {
-                    console.log(result.data);
-                    setSponcerToggle(true);
-                })
-                .catch((error) => {
-                    setErrorHandle(true);
-                });
-        }
-    };
-
-    const resendOtp = () => {
-        setSeconds(90);
-        getVarifactionCode();
-    };
-
-    const handleRegister = () => {
-        // axios.post(
-        //     `${BASE_URL}/api/user/verify_varifaction_code`,
-        //     {
-        //       varifaction_code: Number(otp),
-        //       varifaction_code_id: varifaction_code_id,
-        //     }
-        //   )
-        // .then((result) => {
-        // console.log(result.data);
-        axios.post(`${BASE_URL}/api/user/register`,
-            {
-                "refer_sponcer_id": sponcerId,
-                "position": "left",
-                "name": "sonu verma",
-                "father_name": "Rajitrem verma",
-                "phone": registerObj.phone || '6387465973',
-                "email": "sonu@gmail.com",
-                "gender": "MALE",
-                "country": "india",
-                "state": "up",
-                "city": "gonda",
-                "pincode": "271604",
-                "address": "",
-                "date_of_birth": "03-07-2000",
-                "password": "AD123"
-            }
-        ).then((result) => {
-            console.log(result)
-            setRegisterApiResponse(result.data.result)
-            // setShowSuccess(true)
-            showModal()
-        }).catch((error) => {
-            console.log(error.response.data?.message)
-        })
-        // })
-        // .catch((error) => {
-        //   console.log(error.response.data);
-        //   setOtpErrorMsg(error.response.data?.message);
-        // });
-        // console.log("registerObj", registerObj, { otp }, varifaction_code_id);
-    };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     return (
         <div className="w-full flex justify-center items-center  min-h-[80vh] ">
-            <Card style={{ boxShadow: "20px" }}>
+            <Card style={{ boxShadow: "20px", width: "110vh" }}>
                 <Form
                     {...formItemLayout}
                     form={form}
@@ -239,12 +99,20 @@ const EditProfile = ({ message }) => {
                             initialValue={message?.name}
                             rules={[
                                 {
-                                    type: "name",
-                                    message: "The input is not a valid name!",
+                                    type: 'name',
+                                    message: 'The input is not a valid Name!',
+                                },
+                                {
+                                    required: true,
+                                    message: (
+                                        <p style={{ width: '200px', marginLeft: '52px', display: 'flex' }}>
+                                            Please fill in your Name!
+                                        </p>
+                                    ),
                                 },
                             ]}
                         >
-                            <Input className="w-[230px] ml-3 justify-between items-center" />
+                            <Input style={{ width: '230px', marginLeft: '3px', justifyContent: 'space-between', alignItems: 'center' }} />
                         </Form.Item>
                         <Form.Item
                             name="father_name"
@@ -253,8 +121,16 @@ const EditProfile = ({ message }) => {
                             initialValue={message?.father_name}
                             rules={[
                                 {
-                                    type: "name",
-                                    message: "The input is not valid Father Name !",
+                                    type: 'name',
+                                    message: 'The input is not a valid Father Name!',
+                                },
+                                {
+                                    required: true,
+                                    message: (
+                                        <p style={{ width: '200px', marginLeft: '28px', display: 'flex' }}>
+                                            Please fill in your Father Name!
+                                        </p>
+                                    ),
                                 },
                             ]}
                         >
@@ -271,11 +147,18 @@ const EditProfile = ({ message }) => {
                             className="w-[220px] "
                             label="Gender"
                             initialValue={message?.gender?.toLowerCase()}
-                            // initialValue="male"
                             rules={[
                                 {
-                                    type: "radio",
-                                    message: "The input is not valid Gender !",
+                                    type: 'radio',
+                                    message: 'The input is not a valid Gender!',
+                                },
+                                {
+                                    required: true,
+                                    message: (
+                                        <p style={{ width: '200px', marginLeft: '22px', display: 'flex' }}>
+                                            Please choose your Gender!
+                                        </p>
+                                    ),
                                 },
                             ]}
                         >
@@ -285,9 +168,9 @@ const EditProfile = ({ message }) => {
                                 <Radio value="other">Other</Radio>
                             </Radio.Group>
                         </Form.Item>
-                        
-                        
-                        
+
+
+
                         <Form.Item
                             name="email"
                             label="Email"
@@ -296,10 +179,18 @@ const EditProfile = ({ message }) => {
                             initialValue={message?.email}
                             rules={[
                                 {
-                                    type: "email",
+                                    type: 'email',
                                     message: (
-                                        <p className="w-[200px]  ml-[65px] flex ">
-                                            The input is not valid Email !
+                                        <p style={{ width: '200px', marginLeft: '65px', display: 'flex' }}>
+                                            The input is not a valid Email!
+                                        </p>
+                                    ),
+                                },
+                                {
+                                    required: true,
+                                    message: (
+                                        <p style={{ width: '250px', marginLeft: '90px', display: 'flex' }}>
+                                            Please fill in your Email!
                                         </p>
                                     ),
                                 },
@@ -317,21 +208,29 @@ const EditProfile = ({ message }) => {
                             initialValue={message?.phone}
                             rules={[
                                 {
-                                    type: "contact",
-                                    message: "The input is not valid Contact No !",
+                                    type: 'contact',
+                                    message: 'The input is not a valid Contact No!',
+                                },
+                                {
+                                    required: true,
+                                    message: (
+                                        <p style={{ width: '200px', marginLeft: '32px', display: 'flex' }}>
+                                            Please fill in your Contact No!
+                                        </p>
+                                    ),
                                 },
                                 {
                                     pattern: new RegExp(/^(0|91)?[6-9][0-9]{9}$/),
                                     message: (
-                                        <p className="w-[200px]  ml-[52px] flex ">
-                                            Invalid Contact No !
+                                        <p style={{ width: '200px', marginLeft: '52px', display: 'flex' }}>
+                                            Invalid Contact No!
                                         </p>
                                     ),
                                 },
                             ]}
-                            hasFeedback
+                        // hasFeedback
                         >
-                            <Input className="w-[230px] ml-2 justify-between items-center" />
+                            <Input style={{ width: '222px', marginLeft: '3px', justifyContent: 'space-between', alignItems: 'center' }} />
                         </Form.Item>
 
                         <Form.Item
@@ -341,8 +240,16 @@ const EditProfile = ({ message }) => {
                             initialValue={message?.country}
                             rules={[
                                 {
-                                    type: "name",
-                                    message: "The input is not valid Country !",
+                                    type: 'name',
+                                    message: 'The input is not a valid Country!',
+                                },
+                                {
+                                    required: true,
+                                    message: (
+                                        <p style={{ width: '200px', marginLeft: '60px', display: 'flex' }}>
+                                            Please fill in your Country!
+                                        </p>
+                                    ),
                                 },
                             ]}
                         >
@@ -358,12 +265,20 @@ const EditProfile = ({ message }) => {
                             initialValue={message?.state}
                             rules={[
                                 {
-                                    type: "name",
-                                    message: "The input is not valid State !",
+                                    type: 'name',
+                                    message: 'The input is not a valid State!',
+                                },
+                                {
+                                    required: true,
+                                    message: (
+                                        <p style={{ width: '200px', marginLeft: '60px', display: 'flex' }}>
+                                            Please fill in your State!
+                                        </p>
+                                    ),
                                 },
                             ]}
                         >
-                            <Input className="w-[230px] ml-5 justify-between items-center" />
+                            <Input style={{ width: '240px', marginLeft: '3px', justifyContent: 'space-between', alignItems: 'center' }} />
                         </Form.Item>
                         <Form.Item
                             name="city"
@@ -372,8 +287,16 @@ const EditProfile = ({ message }) => {
                             initialValue={message?.city}
                             rules={[
                                 {
-                                    type: "name",
-                                    message: "The input is not valid City !",
+                                    type: 'name',
+                                    message: 'The input is not a valid City!',
+                                },
+                                {
+                                    required: true,
+                                    message: (
+                                        <p style={{ width: '200px', marginLeft: '90px', display: 'flex' }}>
+                                            Please fill in your City!
+                                        </p>
+                                    ),
                                 },
                             ]}
                         >
@@ -389,16 +312,16 @@ const EditProfile = ({ message }) => {
                             initialValue={message?.address}
                             rules={[
                                 {
-                                    type: "address",
+                                    type: 'address',
                                     message: (
-                                        <p className="w-[200px]  ml-[60px] flex ">
-                                            The input is not valid Address !
+                                        <p style={{ width: '200px', marginLeft: '60px', display: 'flex' }}>
+                                            The input is not a valid Address!
                                         </p>
                                     ),
                                 },
                             ]}
                         >
-                            <Input className="w-[230px] ml-1 justify-between items-center" />
+                            <Input style={{ width: '220px', marginLeft: '3px', justifyContent: 'space-between', alignItems: 'center' }} />
                         </Form.Item>
                         <Form.Item
                             name="pincode"
@@ -407,22 +330,41 @@ const EditProfile = ({ message }) => {
                             initialValue={message?.pincode}
                             rules={[
                                 {
-                                    type: "name",
-                                    message: "The input is not valid Pincode !",
+                                    pattern: new RegExp(/^\d{6}$/),
+                                    message: 'Please enter a valid 6-digit Pincode!',
+                                },
+                                {
+                                    required: true,
+                                    message: (
+                                        <p style={{ width: '200px', marginLeft: '50px', display: 'flex' }}>
+                                            Please fill in your Pincode!
+                                        </p>
+                                    ),
                                 },
                             ]}
                         >
                             <Input className="w-[240px] ml-6 justify-between items-center" />
                         </Form.Item>
                     </div>
+
+                    <Button
+                        htmlType="submit"
+                        style={{
+                            Item: 'center',
+                            backgroundColor: 'blue',
+                            color: 'white',
+                        }}
+                        type="primary"
+                    >
+                        Update
+                    </Button>
+                    {resHandler && (
+                        <h5 style={{ color: color, fontWeight: 'bold', marginTop: "20px", fontSize: "20px" }}>{resMsg}</h5>
+
+                    )}
                 </Form>
-                <Button
-                    className="ml-[300px] bg-[blue] text-white"
-                    onClick={getVarifactionCode}
-                    htmlType="submit"
-                >
-                    Update
-                </Button>
+
+
 
             </Card>
 

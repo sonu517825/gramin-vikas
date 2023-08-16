@@ -15,6 +15,12 @@ const Schema = new mongoose.Schema(
       uppercase: true,
       trim: true,
     },
+    parent_refer_sponcer_id: {
+      type: String,
+      required: true,
+      uppercase: true,
+      trim: true,
+    },
     position: {
       type: String,
       required: true,

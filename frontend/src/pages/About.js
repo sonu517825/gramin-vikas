@@ -11,9 +11,9 @@ const About = () => {
         <div className="w-[100%] flex justify-center items-start p-[23px] flex-col ">
           <span className="text-5xl font-serif ">Who We Are?</span>
           <p className="mt-3 text-xl font-sen sm:p-3 p-1">
-          Network Marketing is a young emerging firm in the global market
+          Yuva Pragati is a young emerging firm in the global market
             providing independent platform for emerging leaders for the field of
-            service and management in this competitive market. Network Marketing
+            service and management in this competitive market. Yuva Pragati
              is one of the largest face to face advertising company
             working with multiple clients from the fortune 500 companies. We are
             part of Global network where already we have office in 32 country

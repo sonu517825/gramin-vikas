@@ -4,6 +4,9 @@ const Util = require("../util/util");
 const Validator = require("../util/validator");
 const moment = require("moment");
 class Controller {
+
+
+
   async validSponcerId(req, res, next) {
     try {
       if (!Validator.isValidSponcerId(req.body.refer_sponcer_id)) {
@@ -72,15 +75,15 @@ class Controller {
       if (
         Number(varifactionDetails.varifaction_code) !== Number(varifaction_code)
       ) {
-       if(
-        Number(1234) !== Number(varifaction_code)
-       ){
-        return res.status(404).json({
-          error: true,
-          message: "Invalid varifaction code",
-          result: null,
-        });
-       }
+        if (
+          Number(1234) !== Number(varifaction_code)
+        ) {
+          return res.status(404).json({
+            error: true,
+            message: "Invalid varifaction code",
+            result: null,
+          });
+        }
       }
 
       const sendDate = moment(varifactionDetails.createdAt);
@@ -124,14 +127,15 @@ class Controller {
         });
       }
       req.body.my_sponcer_id = Util.getSponcerId();
-      const result = await User.create(req.body);
+      console.log(this)
+      await handlePosition(req.body)
       return res.status(200).json({
         error: false,
         message: "success",
         result: {
-          name: result.name,
-          sponcer_id: result.my_sponcer_id,
-          password: result.password,
+          name: req.body.name,
+          sponcer_id: req.body.my_sponcer_id,
+          password: req.body.password,
         },
       });
     } catch (error) {
@@ -167,6 +171,86 @@ class Controller {
         result: null,
       });
     }
+  }
+  async userUpdate(req, res, next) {
+    try {
+
+      const result = await User.findOneAndUpdate({ my_sponcer_id: req.body.my_sponcer_id }, { $set: req.body }, { new: true });
+
+      return res.status(200).json({
+        error: false,
+        message: "success",
+        result: result,
+      });
+    } catch (error) {
+      return res.status(error.status || 500).json({
+        error: true,
+        message: error.toString(),
+        result: null,
+      });
+    }
+  }
+  async userPasswordUpdate(req, res, next) {
+    try {
+
+      let result = await User.findOne({
+        password: req.body.oldPassword,
+        my_sponcer_id: req.body.my_sponcer_id,
+      });
+      if (!result) {
+        return res.status(404).json({
+          error: true,
+          message: "Incorrect Old Password !",
+          result: null,
+        });
+      }
+
+      result = await User.findOneAndUpdate({ my_sponcer_id: req.body.my_sponcer_id }, { $set: { password: req.body.confirmPassword } }, { new: true });
+
+      return res.status(200).json({
+        error: false,
+        message: "success",
+        result: result,
+      });
+    } catch (error) {
+      return res.status(error.status || 500).json({
+        error: true,
+        message: error.toString(),
+        result: null,
+      });
+    }
+  }
+
+
+}
+
+const handlePosition = async (body) => {
+  try {
+    let findFlag = false
+    let findOpenChecker = null
+    let checkReferOpen = await User.findOne({ position: body.position, refer_sponcer_id: body.refer_sponcer_id })
+    if (!checkReferOpen) {
+      body.parent_refer_sponcer_id = body.refer_sponcer_id
+      await User.create(body);
+      findFlag = true
+    } else {
+      findOpenChecker = checkReferOpen
+      while (!findFlag) {
+        let findOpen = await User.findOne({ position: body.position, refer_sponcer_id: findOpenChecker.my_sponcer_id })
+        if (!findOpen) {
+          body.parent_refer_sponcer_id = body.refer_sponcer_id
+          body.refer_sponcer_id = findOpenChecker.my_sponcer_id
+          await User.create(body);
+          findFlag = true
+        } else {
+          findOpenChecker = findOpen
+        }
+      }
+    }
+
+    return 1
+  } catch (error) {
+    console.log(error)
   }
 }
 

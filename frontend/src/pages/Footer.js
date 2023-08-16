@@ -26,7 +26,7 @@ const Footer = () => {
             <h2>Our Location</h2>
             <p className="footer_para">
               <p>
-                Network Marketing,Thamara tower 3rd floor,above hdfc
+              Yuva Pragati,Thamara tower 3rd floor,above hdfc
                 bank,Srinivasan nagar,Vayaloor main road Trichy,620017
               </p>
             </p>

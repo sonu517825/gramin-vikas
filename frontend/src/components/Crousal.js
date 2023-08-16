@@ -22,7 +22,7 @@ function Crousel() {
                   transition={{ repeat: Infinity, repeatDelay: 1 , repeatType: "reverse" , type: "spring",bounce: 0.25, stiffness: 50,ease:"easeOut"  }}
                   className=" animate-charcter text-sm-center md:text-[150px] text-5xl sm:text-7xl"
                 >
-                  Network Marketing
+                 Yuva Pragati
                 </motion.h3>
               </div>
             </div>
@@ -50,7 +50,7 @@ function Crousel() {
                   transition={{ repeat: Infinity, repeatDelay: 1 , repeatType: "reverse" , type: "spring",bounce: 0.25, stiffness: 50,ease:"easeOut"  }}
                   className=" animate-charcter text-sm-center md:text-[150px] text-5xl sm:text-7xl"
                 >
-                  Network Marketing
+                 Yuva Pragati
                 </motion.h3>
               </div>
             </div>
@@ -78,7 +78,7 @@ function Crousel() {
                   transition={{ repeat: Infinity, repeatDelay: 1 , repeatType: "reverse" , type: "spring",bounce: 0.25, stiffness: 50,ease:"easeOut"  }}
                   className=" animate-charcter text-sm-center md:text-[150px] text-5xl sm:text-7xl"
                 >
-                  Network Marketing
+                Yuva Pragati
                 </motion.h3>
               </div>
             </div>

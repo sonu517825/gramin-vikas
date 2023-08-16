@@ -16,19 +16,15 @@ import { BASE_URL } from '../../config/config'
 const ChangePassword = ({ message }) => {
     const [form] = Form.useForm();
     const [registerObj, setRegisterObj] = useState({});
-
-
-
-
-
-
-
-
+    const [resHandler, setResHandler] = useState(false);
+    const [color, setColor] = useState('red');
+    const [resMsg, setResMsg] = useState('Something went wrong !');
 
 
     const onFinish = (values) => {
         console.log("Success:", values);
         setRegisterObj(values);
+        changePassword()
     };
 
 
@@ -39,7 +35,24 @@ const ChangePassword = ({ message }) => {
 
 
     const changePassword = () => {
+        registerObj.my_sponcer_id = message.my_sponcer_id
+        axios.put(
+            `${BASE_URL}/api/user/password/update`,
+            registerObj
+        )
+            .then((result) => {
+                setColor('green')
+                setResHandler(true);
+                setResMsg('Password Changed Successfully')
+            })
+            .catch((error) => {
+                console.log(error)
+                setResHandler(true);
+                if (error?.message?.includes('404')) {
+                    setResMsg('Incorrect Old Password !')
+                }
 
+            });
     }
 
     return <div className="items-center ml-[350px] mt-[160px] ">
@@ -76,17 +89,20 @@ const ChangePassword = ({ message }) => {
                         hasFeedback
                         rules={[
                             {
-                              required: true,
-                              message: (
-                                <p className="w-[210px]  ml-[12px] flex ">
-                                  Please enter your old password !
-                                </p>
-                              ),
+                                required: true,
+                                message: (
+                                    <p className="w-[210px]  ml-[12px] flex ">
+                                        Please enter your old password !
+                                    </p>
+                                ),
                             },
 
                         ]}
                     >
-                        <Input.Password className="w-[230px] mr-[64px] " />
+                        <Input.Password style={{
+                            width: '260px',
+                            // marginRight: 'px',
+                        }} />
                     </Form.Item></div>
 
                     <div>  <Form.Item
@@ -97,17 +113,20 @@ const ChangePassword = ({ message }) => {
                         hasFeedback
                         rules={[
                             {
-                              required: true,
-                              message: (
-                                <p className="w-[250px]  ml-[15px] flex ">
-                                  Please confirm your new password !
-                                </p>
-                              ),
+                                required: true,
+                                message: (
+                                    <p className="w-[250px]  ml-[15px] flex ">
+                                        Please confirm your new password !
+                                    </p>
+                                ),
                             },
 
                         ]}
                     >
-                        <Input.Password className="w-[230px] mr-[64px] " />
+                        <Input.Password style={{
+                            width: '260px',
+                            // marginRight: '0px',
+                        }} />
                     </Form.Item></div>
 
                     <div>
@@ -121,12 +140,12 @@ const ChangePassword = ({ message }) => {
                             hasFeedback
                             rules={[
                                 {
-                                  required: true,
-                                  message: (
-                                    <p className="w-[250px]  ml-[15px] flex ">
-                                      Please confirm your new password !
-                                    </p>
-                                  ),
+                                    required: true,
+                                    message: (
+                                        <p className="w-[250px]  ml-[15px] flex ">
+                                            Please confirm your new password !
+                                        </p>
+                                    ),
                                 },
                                 ({ getFieldValue }) => ({
                                     validator(_, value) {
@@ -142,7 +161,10 @@ const ChangePassword = ({ message }) => {
                                 }),
                             ]}
                         >
-                            <Input.Password className="w-[230px] mr-[64px] " />
+                            <Input.Password style={{
+                                width: '260px',
+                                marginRight: '24px',
+                            }} />
                         </Form.Item>
 
 
@@ -152,12 +174,20 @@ const ChangePassword = ({ message }) => {
 
 
                     <Button
-                        className="bg-[blue] text-white ml-[0px]"
                         htmlType="submit"
-                        onClick={changePassword}
+                        style={{
+                            Item: 'center',
+                            backgroundColor: 'blue',
+                            color: 'white',
+                        }}
+                        type="primary"
                     >
                         Submit
                     </Button>
+                    {resHandler && (
+                        <h5 style={{ color: color, fontWeight: 'bold', marginTop: "20px", fontSize: "20px" }}>{resMsg}</h5>
+
+                    )}
                 </Form>
 
             </div >
