@@ -9,5 +9,8 @@ router.post("/user/register", Controller.userRegister);
 router.post("/user/login", Controller.userLogin);
 router.put("/user/update", Controller.userUpdate);
 router.put("/user/password/update", Controller.userPasswordUpdate);
+router.get("/user/my-team/:sponcer_id", Controller.userMyTeam);
+router.get("/user/my-team/table/:sponcer_id", Controller.userMyTeamTable);
 
 module.exports = router;
+

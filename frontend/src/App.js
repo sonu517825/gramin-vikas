@@ -101,7 +101,8 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route path="/dashboard" element={<Home />} />
-          <Route path="/dashboard/team/view" element={<Home />} />
+          <Route path="/dashboard/team/tree" element={<Home />} />
+          <Route path="/dashboard/team/table" element={<Home />} />
           <Route path="/dashboard/kyc/view" element={<Home />} />
           <Route path="/dashboard/kyc/edit" element={<Home />} />
           <Route path="/dashboard/bank/view" element={<Home />} />

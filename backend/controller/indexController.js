@@ -220,6 +220,122 @@ class Controller {
       });
     }
   }
+  async userMyTeam(req, res, next) {
+    try {
+
+      let root_data = await User.findOne({
+        my_sponcer_id: req.params.sponcer_id
+      });
+      if (!root_data) {
+        return res.status(404).json({
+          error: true,
+          message: "Id not found",
+          result: null,
+        });
+      }
+      let result = await User.find({ $and: [{ $or: [{ refer_sponcer_id: req.params.sponcer_id }, { parent_refer_sponcer_id: req.params.sponcer_id }] }, { my_sponcer_id: { $ne: req.params.sponcer_id } }] }).sort({ _id: 1 });
+
+      const data = {}
+
+
+      let root_my_sponcer_id = root_data.my_sponcer_id
+      let root_refer_sponcer_id = root_data.refer_sponcer_id
+      let root_parent_refer_sponcer_id = root_data.parent_refer_sponcer_id
+      let root_left_data = null
+      let root_right_data = null
+
+
+      for (let i = 0; i < result.length; i++) {
+        if (result[i].refer_sponcer_id == root_my_sponcer_id && result[i].parent_refer_sponcer_id == root_my_sponcer_id && result[i].position == "LEFT") {
+          root_left_data = result[i]
+          result[i] = null;
+          break;
+        }
+      }
+
+      for (let i = 0; i < result.length; i++) {
+        if (result[i].refer_sponcer_id == root_my_sponcer_id && result[i].parent_refer_sponcer_id == root_my_sponcer_id && result[i].position == "RIGHT") {
+          root_right_data = result[i]
+          result[i] = null;
+          break;
+        }
+      }
+
+      data["name"] = root_data
+      data["left"] = {}
+      data["right"] = {}
+      root_left_data && root_left_data ? data["left"]["name"] = root_left_data : data["left"] = null
+      root_right_data && root_right_data ? data["right"]["name"] = root_right_data : data["right"] = null
+
+
+
+
+      let left_data = null
+      let right_data = null
+      let found = false;
+
+
+
+
+      // while (!result.every(obj => obj == null)) {
+      //   for (let i = 0; i < result.length; i++) {
+      //     if (result[i].refer_sponcer_id == root_my_sponcer_id && result[i].parent_refer_sponcer_id == root_my_sponcer_id && result[i].position == "LEFT") {
+      //       root_left_data = result[i]
+      //       result[i] = null;
+      //       break;
+      //     }
+      //   }
+
+      //   for (let i = 0; i < result.length; i++) {
+      //     if (result[i].refer_sponcer_id == root_my_sponcer_id && result[i].parent_refer_sponcer_id == root_my_sponcer_id && result[i].position == "RIGHT") {
+      //       root_right_data = result[i]
+      //       result[i] = null;
+      //       break;
+      //     }
+      //   }
+      // }
+
+
+
+      return res.status(200).json({
+        error: false,
+        message: "success",
+        result: { root_data, result, data },
+      });
+    } catch (error) {
+      return res.status(error.status || 500).json({
+        error: true,
+        message: error.toString(),
+        result: null,
+      });
+    }
+  }
+  async userMyTeamTable(req, res, next) {
+    try {
+
+
+      let result = await User.find({ $or: [{ refer_sponcer_id: req.params.sponcer_id }, { parent_refer_sponcer_id: req.params.sponcer_id }] }).sort({ _id: 1 });
+
+      result.map(obj => {
+        if (obj.my_sponcer_id == req.params.sponcer_id) {
+          obj.position = 'ROOT'
+        }
+        return obj
+      })
+
+      return res.status(200).json({
+        error: false,
+        message: "success",
+        result: result
+      });
+    } catch (error) {
+      return res.status(error.status || 500).json({
+        error: true,
+        message: error.toString(),
+        result: null,
+      });
+    }
+  }
 
 
 }

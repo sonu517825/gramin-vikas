@@ -12,6 +12,7 @@ import MyProfile from "./MyProfile";
 import EditProfile from "./EditProfile";
 import WelcomeLetter from "./WelcomeLetter";
 import ChangePassword from "./ChangePassword";
+import TreeView from './MyTeamTree';
 
 import {
   VerifiedOutlined,
@@ -24,7 +25,9 @@ import {
   LogoutOutlined,
   PayCircleOutlined,
   GiftOutlined,
-  KeyOutlined
+  KeyOutlined,
+  TableOutlined,
+  DeploymentUnitOutlined
 } from '@ant-design/icons';
 
 
@@ -76,9 +79,26 @@ const Home = () => {
           <Menu.Item key="/dashboard" icon={<DashboardOutlined />}>
             Dashboard
           </Menu.Item>
-          <Menu.Item key="/dashboard/team/view" icon={<TeamOutlined />}>
+
+
+
+          {/* <Menu.Item key="/dashboard/team/view" icon={<TeamOutlined />}>
             My Team
-          </Menu.Item>
+          </Menu.Item> */}
+
+          <SubMenu key="11" icon={<TeamOutlined />} title="My Team">
+
+            <Menu.Item key="/dashboard/team/tree" icon={<DeploymentUnitOutlined />}>
+              Tree View
+            </Menu.Item>
+
+            <Menu.Item key="/dashboard/team/table" icon={<TableOutlined />}>
+              Table View
+            </Menu.Item>
+
+          </SubMenu>
+
+
 
           <SubMenu key="3" icon={<VerifiedOutlined />} title="KYC Details">
 
@@ -139,8 +159,11 @@ const Home = () => {
           {activeMenuItem === '/dashboard' && (
             <Dashboard payload={payload} />
           )}
-          {activeMenuItem === '/dashboard/team/view' && (
-            <MyTeam />
+          {activeMenuItem === '/dashboard/team/tree' && (
+            <TreeView />
+          )}
+          {activeMenuItem === '/dashboard/team/table' && (
+            <MyTeam message={payload} />
           )}
           {activeMenuItem === '/dashboard/kyc/view' && (
             <Mykyc />
