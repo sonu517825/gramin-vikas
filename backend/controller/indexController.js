@@ -314,19 +314,30 @@ class Controller {
     try {
 
 
-      let result = await User.find({ $or: [{ refer_sponcer_id: req.params.sponcer_id }, { parent_refer_sponcer_id: req.params.sponcer_id }] }).sort({ _id: 1 });
+      let result = await User.find({ $or: [{ my_sponcer_id: req.params.sponcer_id }, { refer_sponcer_id: req.params.sponcer_id }, { parent_refer_sponcer_id: req.params.sponcer_id }] }).sort({ _id: 1 });
 
       result.map(obj => {
         if (obj.my_sponcer_id == req.params.sponcer_id) {
-          obj.position = 'ROOT'
+          obj.position = `${obj.position} - ROOT`
         }
         return obj
       })
 
+      const uniqueIdsSet = new Set();
+
+      result.forEach(entry => {
+        uniqueIdsSet.add(entry.my_sponcer_id);
+        uniqueIdsSet.add(entry.refer_sponcer_id);
+        uniqueIdsSet.add(entry.parent_refer_sponcer_id);
+      });
+
+      const details = await User.find({ my_sponcer_id: { $in: [...uniqueIdsSet] } })
+
       return res.status(200).json({
         error: false,
         message: "success",
-        result: result
+        result: result,
+        details: details
       });
     } catch (error) {
       return res.status(error.status || 500).json({

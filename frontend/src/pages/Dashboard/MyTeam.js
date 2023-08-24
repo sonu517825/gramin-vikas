@@ -1,132 +1,16 @@
-
-// import {
-//     Button,
-//     Card,
-//     Form,
-//     Input,
-//     Radio,
-//     Select,
-//     Modal
-// } from "antd";
-// import { useState } from "react";
-// import axios from "axios";
-// import { BASE_URL } from '../../config/config'
-
-
-// const MyTeam = ({ message }) => {
-
-//     return (
-//         <div>
-//             <h1>MyTeam Comming Soon...!!!</h1>
-
-//         </div >
-//     );
-// };
-// export default MyTeam;
-
-// import  from 'react';
 import { useState, React, useEffect } from "react";
 import axios from "axios";
 import { BASE_URL } from '../../config/config'
-import { Table, Tooltip, Card, Popover } from 'antd';
+import { Table, Tooltip, Typography, Card, Popover } from 'antd';
+
 
 import moment from 'moment'
-// const dataArray = [
-//     {
-//         "_id": "64cab8ad083f8fc7c5d5c086",
-//         "my_sponcer_id": "AD123",
-//         "refer_sponcer_id": "AD123",
-//         "position": "MAIN",
-//         "name": "Ramesh",
-//         "phone": "7830360293",
-//         "email": "yuvapragati.pvt@gmail.com",
-//         "gender": "MALE",
-//         "country": "India",
-//         "state": "UP",
-//         "city": "Gonda",
-//         "pincode": "271002",
-//         "date_of_birth": "03-07-2000",
-//         "password": "12345",
-//         "is_deleted": false,
-//         "createdAt": "2023-08-02T20:12:29.764Z",
-//         "updatedAt": "2023-08-22T17:14:49.453Z",
-//         "__v": 0,
-//         "parent_refer_sponcer_id": "AD123",
-//         "father_name": "Jamuna",
-//         "address": ""
-//     },
-//     {
-//         "_id": "64dbbf36c6c38caf37f8176b",
-//         "my_sponcer_id": "PZ223",
-//         "refer_sponcer_id": "AD123",
-//         "parent_refer_sponcer_id": "AD123",
-//         "position": "RIGHT",
-//         "name": "Sonu",
-//         "father_name": "RR",
-//         "phone": "7845673475",
-//         "email": "a@gma.co",
-//         "gender": "MALE",
-//         "country": "IN",
-//         "state": "UP",
-//         "city": "GD",
-//         "pincode": "334555",
-//         "date_of_birth": "2023-08-06",
-//         "password": "!!!",
-//         "is_deleted": false,
-//         "createdAt": "2023-08-15T18:08:54.761Z",
-//         "updatedAt": "2023-08-15T18:08:54.761Z",
-//         "__v": 0
-//     },
-//     {
-//         "_id": "64dbbff7c6c38caf37f81774",
-//         "my_sponcer_id": "GT992",
-//         "refer_sponcer_id": "PZ223",
-//         "parent_refer_sponcer_id": "AD123",
-//         "position": "RIGHT",
-//         "name": "Sonu",
-//         "father_name": "RR",
-//         "phone": "7845673475",
-//         "email": "a@gma.co",
-//         "gender": "MALE",
-//         "country": "IN",
-//         "state": "UP",
-//         "city": "GD",
-//         "pincode": "334555",
-//         "date_of_birth": "2023-08-07",
-//         "password": "@@@",
-//         "is_deleted": false,
-//         "createdAt": "2023-08-15T18:12:07.486Z",
-//         "updatedAt": "2023-08-15T18:12:07.486Z",
-//         "__v": 0
-//     },
-//     {
-//         "_id": "64dbc054c6c38caf37f8177c",
-//         "my_sponcer_id": "ZV519",
-//         "refer_sponcer_id": "AD123",
-//         "parent_refer_sponcer_id": "AD123",
-//         "position": "LEFT",
-//         "name": "Sonu",
-//         "father_name": "RR",
-//         "phone": "7845673475",
-//         "email": "a@gma.co",
-//         "gender": "MALE",
-//         "country": "IN",
-//         "state": "UP",
-//         "city": "GD",
-//         "pincode": "334555",
-//         "date_of_birth": "2023-08-01",
-//         "password": "###",
-//         "is_deleted": false,
-//         "createdAt": "2023-08-15T18:13:40.856Z",
-//         "updatedAt": "2023-08-15T18:13:40.856Z",
-//         "__v": 0
-//     }
-// ]
 
-
+const { Text } = Typography;
 
 const MyTeam = ({ message }) => {
     const [dataArray, setResHandler] = useState([]);
+    const [detailsArray, setDetailsArray] = useState([]);
 
 
     const generatePopoverContent = (id, arr) => {
@@ -161,6 +45,7 @@ const MyTeam = ({ message }) => {
         )
             .then((result) => {
                 setResHandler(result.data.result || []);
+                setDetailsArray(result.data.details || []);
             })
             .catch((error) => {
             });
@@ -175,7 +60,7 @@ const MyTeam = ({ message }) => {
             key: 'my_sponcer_id',
             render: (text, record) => (
                 <Popover
-                    content={generatePopoverContent(text, dataArray)}
+                    content={generatePopoverContent(text, detailsArray)}
                     trigger="hover"
                 >
                     <span className="bold-title">{text}</span>
@@ -203,7 +88,7 @@ const MyTeam = ({ message }) => {
             key: 'refer_sponcer_id',
             render: (text, record) => (
                 <Popover
-                    content={generatePopoverContent(text, dataArray)}
+                    content={generatePopoverContent(text, detailsArray)}
                     trigger="hover"
                 >
                     <span className="bold-title">{text}</span>
@@ -216,7 +101,7 @@ const MyTeam = ({ message }) => {
             key: 'parent_refer_sponcer_id',
             render: (text, record) => (
                 <Popover
-                    content={generatePopoverContent(text, dataArray)}
+                    content={generatePopoverContent(text, detailsArray)}
                     trigger="hover"
                 >
                     <span className="bold-title">{text}</span>
@@ -224,19 +109,167 @@ const MyTeam = ({ message }) => {
             )
         },
         {
-            title: 'Date',
+            title: 'Joining Date',
             dataIndex: 'createdAt',
             key: 'createdAt',
             render: (date) => moment(date).format('D MMM YYYY HH:mm:ss')
         },
     ];
 
+    const countDetails = {
+        direct: 10,
+        refer: 5,
+        paired: 8,
+        total: 15,
+    };
 
+    // return (
+    //     <div>
+    //         <Table dataSource={dataArray} columns={columns} />
+    //     </div>
+    // );
 
     return (
         <div>
-            <Table dataSource={dataArray} columns={columns} />
-        </div>
+            <Card style={{ marginBottom: 20, backgroundColor: '#10B981', }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', }}>
+                    <Card style={{
+                        backgroundColor: '#F59E0B',
+                        width: '210px',
+                        height: '150px',
+                        textAlign: 'center',
+                        padding: '0.625rem 0.75rem',
+                        borderRadius: '0.375rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <div >
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >Total</Text>
+                            <br />
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >{countDetails.direct}</Text>
+                        </div>
+                    </Card>
+                    <Card style={{
+                        backgroundColor: '#F59E0B',
+                        width: '210px',
+                        height: '150px',
+                        textAlign: 'center',
+                        padding: '0.625rem 0.75rem',
+                        borderRadius: '0.375rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <div >
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >Direct</Text>
+                            <br />
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >{countDetails.direct}</Text>
+                        </div>
+                    </Card>
+                    <Card style={{
+                        backgroundColor: '#F59E0B',
+                        width: '210px',
+                        height: '150px',
+                        textAlign: 'center',
+                        padding: '0.625rem 0.75rem',
+                        borderRadius: '0.375rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <div >
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >Refer</Text>
+                            <br />
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >{countDetails.direct}</Text>
+                        </div>
+                    </Card>
+                    <Card style={{
+                        backgroundColor: '#F59E0B',
+                        width: '210px',
+                        height: '150px',
+                        textAlign: 'center',
+                        padding: '0.625rem 0.75rem',
+                        borderRadius: '0.375rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <div >
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >Paired</Text>
+                            <br />
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >{countDetails.direct}</Text>
+                        </div>
+                    </Card>
+                </div>
+                {/* <div style={{ display: 'flex', justifyContent: 'space-between', }}>
+                    <Card style={{
+                        backgroundColor: '#F59E0B',
+                        minWidth: '65px',
+                        maxWidth: 'fit-content',
+                        textAlign: 'center',
+                        padding: '0.625rem 0.75rem',
+                        borderRadius: '0.375rem'
+                    }}>
+                        <div >
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >Total</Text>
+                            <br />
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >{countDetails.direct}</Text>
+                        </div>
+                    </Card>
+                    <Card style={{
+                        backgroundColor: '#F59E0B',
+                        minWidth: '65px',
+                        maxWidth: 'fit-content',
+                        textAlign: 'center',
+                        padding: '0.625rem 0.75rem',
+                        borderRadius: '0.375rem'
+                    }}>
+                        <div >
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >Direct</Text>
+                            <br />
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >{countDetails.direct}</Text>
+                        </div>
+                    </Card>
+                    <Card style={{
+                        backgroundColor: '#F59E0B',
+                        minWidth: '65px',
+                        maxWidth: 'fit-content',
+                        textAlign: 'center',
+                        padding: '0.625rem 0.75rem',
+                        borderRadius: '0.375rem'
+                    }}>
+                        <div >
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >Refer</Text>
+                            <br />
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >{countDetails.direct}</Text>
+                        </div>
+                    </Card>
+                    <Card style={{
+                        backgroundColor: '#F59E0B',
+                        minWidth: '65px',
+                        maxWidth: 'fit-content',
+                        textAlign: 'center',
+                        padding: '0.625rem 0.75rem',
+                        borderRadius: '0.375rem'
+                    }}>
+                        <div >
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >Paired</Text>
+                            <br />
+                            <Text style={{ color: 'white', fontSize: "3rem" }} >{countDetails.direct}</Text>
+                        </div>
+                    </Card>
+                </div> */}
+
+            </Card >
+            <div>
+                <Table dataSource={dataArray} columns={columns} />
+            </div>
+        </div >
     );
 };
 
