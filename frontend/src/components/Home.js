@@ -44,16 +44,24 @@ function Home() {
                 connection with consumers, delivers value to clients, and
                 supports small businesses and entrepreneurs
               </p>
-              
+
             </div>
           </div>
 
           <div className="p-12">
-            <img src={"/image/network logo.jpg"} alt="logo" />
+            <img src={"/image/network logo.png"} style={{
+              width: "95vh",
+              // height: "90vh",
+              // padding: '0.625rem 0.75rem',
+              borderRadius: '0.4rem',
+              display: 'flex',
+              // flexDirection: 'column',
+            }} alt="logo" />
+            {/* <img src={"/image/network logo.png"} alt="logo" /> */}
           </div>
         </div>
       </div>
-      
+
     </>
   );
 }

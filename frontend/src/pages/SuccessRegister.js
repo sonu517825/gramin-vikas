@@ -7,7 +7,7 @@ const SuccessRegister = ({ message }) => {
             <span className="bg-black flex flex-col justify-center items-center w-full h-full">
                 <img
                     className="mx-auto w-60 h-60 mb-[20px]"
-                    src="/image/logo1.png"
+                    src="/image/logo.png"
                     alt="logo"
                 />
             </span>

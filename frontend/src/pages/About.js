@@ -66,64 +66,15 @@ const About = () => {
           everything is possible to achieve in life if u keep trying until you
           achieve .
         </p>
-        <div className="w-[100%]  mt-4 flex sm:flex-row justify-center items-center flex-wrap">
+        {/* <div className="w-[100%]  mt-4 flex sm:flex-row justify-center items-center flex-wrap">
           <h3 className=" text-3xl font-normal font-serif text-center">
             Our Core Leader's
           </h3>
-        </div>
+        </div> */}
       </div>
-      <div className="w-[100%] mt-4 flex sm:flex-row justify-center items-center flex-wrap flex-col  ">
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}  className="w-[270px]  p-3 shadow-lg m-2 text-center ">
-          <div className="w-[100%]  object-cover  ">
-            <img
-              className="w-[270px] h-[300px] object-cover rounded-lg  "
-              // src="/image/ceo.jpg"
-              alt="ceo"
-            />
-          </div>
-          {/* <h5>MR SHAHBAZ Warish</h5> */}
-          <p>CEO</p>
-        </motion.div>
-        <motion.div
-          className="w-[270px]  p-3 shadow-lg m-2 text-center   "
-          whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-        >
-          <img
-            className="w-[250px] h-[300px] object-cover rounded-lg "
-            // src="/image/leo.png"
-            alt="cto"
-          />
-          {/* <h5>MR Audesh Shukla</h5> */}
-          <p>Chief Technology Officer</p>
-        </motion.div>
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="w-[270px]  p-3 shadow-lg m-2 text-center  ">
-          <img
-            className="w-[250px] h-[300px] object-cover rounded-lg "
-            // src="/image/cto.jpeg"
-            alt="cmo"
-          />
-          {/* <h5>MR Aman Kumar</h5> */}
-          <p>Chief Marketing Officer</p>
-        </motion.div>
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="w-[270px]  p-3 shadow-lg m-2 text-center">
-          <img
-            className="w-[250px] h-[300px] object-cover rounded-lg "
-            // src="/image/employee3.jpg"
-            alt="cfo"
-          />
-          {/* <h5>MR Jamuna Prasad </h5> */}
-          <p>Chief Financial Officer</p>
-        </motion.div>
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="w-[250px]   p-3 shadow-lg m-2 text-center ">
-          <img
-            className="w-[250px] h-[300px] object-cover rounded-lg "
-            // src="/image/employee4.jpg"
-            alt="gm"
-          />
-          {/* <h5>MRS Abinaya K</h5> */}
-          <p>General Manager</p>
-        </motion.div>
-      </div>
+
+    
+      
       <Footer />
     </>
   );

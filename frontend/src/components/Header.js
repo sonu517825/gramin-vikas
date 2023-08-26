@@ -14,7 +14,7 @@ function Header() {
       >
         <Container>
           <Navbar.Brand>
-            <img src={"/image/network logo.jpg"} className=" sm:w-[100px] w-[80px] " alt="logo" />
+            <img src={"/image/network logo.png"} className=" sm:w-[70px] w-[50px] ml-[60px] " style={{ borderRadius: '0.4rem', }} alt="logo" />
           </Navbar.Brand>
           <Navbar.Toggle className="bg-white border-1  " aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -23,22 +23,23 @@ function Header() {
             </Nav>
             <Nav className="me-auto header_items ">
               <NavLink to="/home" className="li_item">
-                Home
+                <span style={{ fontWeight: 800, fontSize: "1.5rem" }}>Home</span>
               </NavLink>
               <NavLink to="/aboutus" className="li_item">
-                About
+                <span style={{ fontWeight: 800, fontSize: "1.5rem" }}>About</span>
+
               </NavLink>
-              <NavLink to="/conatctus" className="li_item" eventKey={2}>
-                Contact
+              <NavLink to="/conatctus" className="li_item">
+                <span style={{ fontWeight: 800, fontSize: "1.5rem" }}>Contact</span>
+
               </NavLink>
               <NavLink to="/verify" className="li_item">
-                Register
+                <span style={{ fontWeight: 800, fontSize: "1.5rem" }}>Register</span>
+
               </NavLink>
-              <NavLink
-                to="/login"
-                className="li_item"
-              >
-                Login
+              <NavLink to="/login" className="li_item">
+                <span style={{ fontWeight: 800, fontSize: "1.5rem" }}>Login</span>
+
               </NavLink>
 
             </Nav>

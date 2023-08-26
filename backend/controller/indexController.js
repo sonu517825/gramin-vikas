@@ -347,6 +347,80 @@ class Controller {
       });
     }
   }
+  async userMyTeamCount(req, res, next) {
+    try {
+
+      let total = 0
+      let direct = 0
+      let refer = 0
+      let paired = 0
+
+      let result = await User.find({ $or: [{ my_sponcer_id: req.params.sponcer_id }, { refer_sponcer_id: req.params.sponcer_id }, { parent_refer_sponcer_id: req.params.sponcer_id }] }).sort({ _id: 1 });
+      total = result.length - 1
+
+      for (let i = 0; i < result.length; i++) {
+        if (result[i].parent_refer_sponcer_id == req.params.sponcer_id && result[i].my_sponcer_id != req.params.sponcer_id) {
+          direct = direct + 1
+        }
+        // if (result[i].parent_refer_sponcer_id == req.params.sponcer_id) {
+        //   direct = direct + 1
+        // }
+      }
+
+      refer = total - direct
+
+      const uniqueIdsSet = new Set();
+
+      result.forEach(entry => {
+        uniqueIdsSet.add(entry.my_sponcer_id);
+        // uniqueIdsSet.add(entry.refer_sponcer_id);
+        // uniqueIdsSet.add(entry.parent_refer_sponcer_id);
+      });
+
+      for (let j = 0; j < [...uniqueIdsSet].length; j++) {
+
+        let check_left = result.filter(obj => obj.position == "LEFT" && obj.refer_sponcer_id == req.params.sponcer_id)
+        let check_right = result.filter(obj => obj.position == "RIGHT" && obj.refer_sponcer_id == req.params.sponcer_id)
+        // console.log(check_left, check_right)
+        if (check_left.length > 0 && check_right.length > 0) {
+          paired = paired + 1
+          result[j] = null;
+          break;
+        }
+
+      }
+
+
+      // for (let i = 0; i < result.length; i++) {
+      //   if (result[i].refer_sponcer_id == root_my_sponcer_id && result[i].parent_refer_sponcer_id == root_my_sponcer_id && result[i].position == "LEFT") {
+      //     root_left_data = result[i]
+      //     result[i] = null;
+      //     break;
+      //   }
+      // }
+
+      // for (let i = 0; i < result.length; i++) {
+      //   if (result[i].refer_sponcer_id == root_my_sponcer_id && result[i].parent_refer_sponcer_id == root_my_sponcer_id && result[i].position == "RIGHT") {
+      //     root_right_data = result[i]
+      //     result[i] = null;
+      //     break;
+      //   }
+      // }
+
+      return res.status(200).json({
+        error: false,
+        message: "success",
+        result: { total, direct, refer, paired },
+
+      });
+    } catch (error) {
+      return res.status(error.status || 500).json({
+        error: true,
+        message: error.toString(),
+        result: null,
+      });
+    }
+  }
 
 
 }

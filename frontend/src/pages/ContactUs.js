@@ -61,27 +61,12 @@ const ContactUs = () => {
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
         ></iframe>
+        <br></br>
+        <Footer />
       </div>
-      {/* <div className="w-[100%] flex justify-center mt-[20px] flex-col "> */}
-        <p className="flex justify-center text-xl font-sen mt-7 mb-4">
-          Yuva Pragati is a young emerging firm in the global market
-          providing independent platform for emerging leaders for the field of
-          service and management in this competitive market. Yuva Pragati
-          is one of the largest face to face advertising company
-          working with multiple clients from the fortune 500 companies. We are
-          part of Global network where already we have office in 32 country
-          with more than 1200 offices around the world. Now we are looking for
-          expansion in all across Tamilnadu and Kerala. We are a dynamic team
-          of creatives comprised of marketing, Communications specialists and
-          business development professionals. We provide global platform to
-          ambitious leaders in the diverse and competitive Indian market in
-          the field of service and management looking for a partner in
-          branding/promotions, client servicing, advertising and
-          communications requirements. The important word in the last is
-          “partner” We work with you, for you.
-        </p>
-      {/* </div> */}
-      <Footer />
+
+
+
     </>
   );
 };
