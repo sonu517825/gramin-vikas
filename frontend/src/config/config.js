@@ -2,8 +2,8 @@
 
 
 
-const PROJECT = 'DEV'
-// const PROJECT = 'PROD' 
+// const PROJECT = 'DEV'
+const PROJECT = 'PROD' 
 
 module.exports = {
     // BASE_URL: 'http://localhost:8090'
