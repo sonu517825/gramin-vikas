@@ -426,23 +426,30 @@ class Controller {
     try {
 
       let total = 0
+      let left = 0
+      let right = 0
       let direct = 0
       let refer = 0
       let paired = 0
 
       let result = await User.find({ $or: [{ my_sponcer_id: req.params.sponcer_id }, { refer_sponcer_id: req.params.sponcer_id }, { parent_refer_sponcer_id: req.params.sponcer_id }] }).sort({ _id: 1 });
-      total = result.length - 1
+
 
       for (let i = 0; i < result.length; i++) {
         if (result[i].parent_refer_sponcer_id == req.params.sponcer_id && result[i].my_sponcer_id != req.params.sponcer_id) {
           direct = direct + 1
         }
-        total = total + result[i].left_count + result[i].right_count
+        if (result[i].my_sponcer_id == req.params.sponcer_id) {
+          left = left + result[i].left_count
+          right = right + result[i].right_count
+        }
+
         // if (result[i].parent_refer_sponcer_id == req.params.sponcer_id) {
         //   direct = direct + 1
         // }
       }
 
+      total = left + right
       refer = total - direct
 
       const uniqueIdsSet = new Set();
