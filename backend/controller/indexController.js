@@ -127,17 +127,92 @@ class Controller {
         });
       }
       req.body.my_sponcer_id = Util.getSponcerId();
-      console.log(this)
-      await handlePosition(req.body)
-      return res.status(200).json({
-        error: false,
-        message: "success",
-        result: {
-          name: req.body.name,
-          sponcer_id: req.body.my_sponcer_id,
-          password: req.body.password,
-        },
-      });
+      let temp = await handlePosition(req.body)
+      let my_sponcer_id = req.body.my_sponcer_id
+      let position = req.body.position
+      if (temp) {
+        position = await findPosition(my_sponcer_id)
+        my_sponcer_id = await findSponcerId(my_sponcer_id)
+        let findMasterId = false
+        console.log("out loop", my_sponcer_id, position)
+        // if (my_sponcer_id == "AD123") {
+        //   if (position === "LEFT") {
+        //     await User.findOneAndUpdate(
+        //       { my_sponcer_id: my_sponcer_id },
+        //       { $inc: { left_count: 1 } },
+        //       { new: true }
+        //     );
+        //   } else {
+        //     await User.findOneAndUpdate(
+        //       { my_sponcer_id: my_sponcer_id },
+        //       { $inc: { right_count: 1 } },
+        //       { new: true }
+        //     );
+        //   }
+
+        // } else {
+        while (!findMasterId) {
+          // if (my_sponcer_id == "AD123") {
+          //   findMasterId = true
+          //   if (position === "LEFT") {
+          //     await User.findOneAndUpdate(
+          //       { my_sponcer_id: my_sponcer_id },
+          //       { $inc: { left_count: 1 } },
+          //       { new: true }
+          //     );
+          //   } else {
+          //     await User.findOneAndUpdate(
+          //       { my_sponcer_id: my_sponcer_id },
+          //       { $inc: { right_count: 1 } },
+          //       { new: true }
+          //     );
+          //   }
+
+          // }
+          if (my_sponcer_id == "AD123") {
+            findMasterId = true
+          }
+          console.log("in loop", my_sponcer_id, position)
+          if (position === "LEFT") {
+            await User.findOneAndUpdate(
+              { my_sponcer_id: my_sponcer_id },
+              { $inc: { left_count: 1 } },
+              { new: true }
+            );
+          } else {
+            await User.findOneAndUpdate(
+              { my_sponcer_id: my_sponcer_id },
+              { $inc: { right_count: 1 } },
+              { new: true }
+            );
+          }
+
+          console.log('hhhhhhhhhhhh')
+          position = await findPosition(my_sponcer_id)
+          my_sponcer_id = await findSponcerId(my_sponcer_id)
+          console.log('yyyyyyyy')
+
+        }
+        // }
+
+
+        return res.status(200).json({
+          error: false,
+          message: "success",
+          result: {
+            name: req.body.name,
+            sponcer_id: req.body.my_sponcer_id,
+            password: req.body.password,
+          },
+        });
+      } else {
+        return res.status(500).json({
+          error: true,
+          message: "failed",
+          result: null
+        });
+      }
+
     } catch (error) {
       return res.status(error.status || 500).json({
         error: true,
@@ -362,6 +437,7 @@ class Controller {
         if (result[i].parent_refer_sponcer_id == req.params.sponcer_id && result[i].my_sponcer_id != req.params.sponcer_id) {
           direct = direct + 1
         }
+        total = total + result[i].left_count + result[i].right_count
         // if (result[i].parent_refer_sponcer_id == req.params.sponcer_id) {
         //   direct = direct + 1
         // }
@@ -449,10 +525,28 @@ const handlePosition = async (body) => {
       }
     }
 
-    return 1
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+const findSponcerId = async (my_sponcer_id) => {
+  try {
+    let data = await User.findOne({ my_sponcer_id: my_sponcer_id })
+    return data.refer_sponcer_id
   } catch (error) {
     console.log(error)
   }
+}
+const findPosition = async (my_sponcer_id) => {
+  try {
+    let data = await User.findOne({ my_sponcer_id: my_sponcer_id })
+    return data.position
+  } catch (error) {
+    console.log(error)
+  }
+
 }
 
 module.exports = new Controller();

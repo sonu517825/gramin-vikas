@@ -81,6 +81,16 @@ const Schema = new mongoose.Schema(
       required: false,
       trim: true,
     },
+    left_count: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    right_count: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
     date_of_birth: {
       type: String,
       required: true,
