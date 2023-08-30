@@ -127,91 +127,16 @@ class Controller {
         });
       }
       req.body.my_sponcer_id = Util.getSponcerId();
-      let temp = await handlePosition(req.body)
-      let my_sponcer_id = req.body.my_sponcer_id
-      let position = req.body.position
-      if (temp) {
-        position = await findPosition(my_sponcer_id)
-        my_sponcer_id = await findSponcerId(my_sponcer_id)
-        let findMasterId = false
-        console.log("out loop", my_sponcer_id, position)
-        // if (my_sponcer_id == "AD123") {
-        //   if (position === "LEFT") {
-        //     await User.findOneAndUpdate(
-        //       { my_sponcer_id: my_sponcer_id },
-        //       { $inc: { left_count: 1 } },
-        //       { new: true }
-        //     );
-        //   } else {
-        //     await User.findOneAndUpdate(
-        //       { my_sponcer_id: my_sponcer_id },
-        //       { $inc: { right_count: 1 } },
-        //       { new: true }
-        //     );
-        //   }
-
-        // } else {
-        while (!findMasterId) {
-          // if (my_sponcer_id == "AD123") {
-          //   findMasterId = true
-          //   if (position === "LEFT") {
-          //     await User.findOneAndUpdate(
-          //       { my_sponcer_id: my_sponcer_id },
-          //       { $inc: { left_count: 1 } },
-          //       { new: true }
-          //     );
-          //   } else {
-          //     await User.findOneAndUpdate(
-          //       { my_sponcer_id: my_sponcer_id },
-          //       { $inc: { right_count: 1 } },
-          //       { new: true }
-          //     );
-          //   }
-
-          // }
-          if (my_sponcer_id == "AD123") {
-            findMasterId = true
-          }
-          console.log("in loop", my_sponcer_id, position)
-          if (position === "LEFT") {
-            await User.findOneAndUpdate(
-              { my_sponcer_id: my_sponcer_id },
-              { $inc: { left_count: 1 } },
-              { new: true }
-            );
-          } else {
-            await User.findOneAndUpdate(
-              { my_sponcer_id: my_sponcer_id },
-              { $inc: { right_count: 1 } },
-              { new: true }
-            );
-          }
-
-          console.log('hhhhhhhhhhhh')
-          position = await findPosition(my_sponcer_id)
-          my_sponcer_id = await findSponcerId(my_sponcer_id)
-          console.log('yyyyyyyy')
-
-        }
-        // }
-
-
-        return res.status(200).json({
-          error: false,
-          message: "success",
-          result: {
-            name: req.body.name,
-            sponcer_id: req.body.my_sponcer_id,
-            password: req.body.password,
-          },
-        });
-      } else {
-        return res.status(500).json({
-          error: true,
-          message: "failed",
-          result: null
-        });
-      }
+      help(req)
+      return res.status(200).json({
+        error: false,
+        message: "success",
+        result: {
+          name: req.body.name,
+          sponcer_id: req.body.my_sponcer_id,
+          password: req.body.password,
+        },
+      });
 
     } catch (error) {
       return res.status(error.status || 500).json({
@@ -513,8 +438,22 @@ const handlePosition = async (body) => {
     let findFlag = false
     let findOpenChecker = null
     let checkReferOpen = await User.findOne({ position: body.position, refer_sponcer_id: body.refer_sponcer_id })
+    let position = body.position
     if (!checkReferOpen) {
       body.parent_refer_sponcer_id = body.refer_sponcer_id
+      if (position === "LEFT") {
+        await User.findOneAndUpdate(
+          { my_sponcer_id: body.refer_sponcer_id },
+          { $set: { left_side: body.my_sponcer_id } },
+          { new: true }
+        );
+      } else {
+        await User.findOneAndUpdate(
+          { my_sponcer_id: body.refer_sponcer_id },
+          { $set: { right_side: body.my_sponcer_id } },
+          { new: true }
+        );
+      }
       await User.create(body);
       findFlag = true
     } else {
@@ -524,6 +463,19 @@ const handlePosition = async (body) => {
         if (!findOpen) {
           body.parent_refer_sponcer_id = body.refer_sponcer_id
           body.refer_sponcer_id = findOpenChecker.my_sponcer_id
+          if (position === "LEFT") {
+            await User.findOneAndUpdate(
+              { my_sponcer_id: body.refer_sponcer_id },
+              { $set: { left_side: body.my_sponcer_id } },
+              { new: true }
+            );
+          } else {
+            await User.findOneAndUpdate(
+              { my_sponcer_id: body.refer_sponcer_id },
+              { $set: { right_side: body.my_sponcer_id } },
+              { new: true }
+            );
+          }
           await User.create(body);
           findFlag = true
         } else {
@@ -550,6 +502,50 @@ const findPosition = async (my_sponcer_id) => {
   try {
     let data = await User.findOne({ my_sponcer_id: my_sponcer_id })
     return data.position
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+const help = async (req) => {
+  try {
+    let temp = await handlePosition(req.body)
+    let my_sponcer_id = req.body.my_sponcer_id
+    let position = req.body.position
+    if (temp) {
+      position = await findPosition(my_sponcer_id)
+      my_sponcer_id = await findSponcerId(my_sponcer_id)
+      let findMasterId = false
+
+      while (!findMasterId) {
+
+        if (my_sponcer_id == "AD123") {
+          findMasterId = true
+        }
+
+        if (position === "LEFT") {
+          await User.findOneAndUpdate(
+            { my_sponcer_id: my_sponcer_id },
+            { $inc: { left_count: 1 } },
+            { new: true }
+          );
+        } else {
+          await User.findOneAndUpdate(
+            { my_sponcer_id: my_sponcer_id },
+            { $inc: { right_count: 1 } },
+            { new: true }
+          );
+        }
+
+        position = await findPosition(my_sponcer_id)
+        my_sponcer_id = await findSponcerId(my_sponcer_id)
+
+      }
+
+    } else {
+      console.log("failed")
+
+    }
   } catch (error) {
     console.log(error)
   }

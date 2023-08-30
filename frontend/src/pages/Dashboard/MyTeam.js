@@ -1100,7 +1100,7 @@ const MyTeam = ({ message }) => {
 
 
 
-    const calculateSerialNumber = (index) => index + startIndex ;
+    const calculateSerialNumber = (index) => index + startIndex;
 
 
     const columns = [
@@ -1140,7 +1140,7 @@ const MyTeam = ({ message }) => {
             key: 'position',
         },
         {
-            title: 'Position At',
+            title: 'Place Id',
             dataIndex: 'refer_sponcer_id',
             key: 'refer_sponcer_id',
             render: (text, record) => (

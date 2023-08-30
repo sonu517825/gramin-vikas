@@ -6,15 +6,15 @@ import Footer from "./Footer";
 const About = () => {
   return (
     <>
-     <Header />
+      <Header />
       <div className="bg-[black] w-[100%]  text-[white] md:p-[24px] ">
         <div className="w-[100%] flex justify-center items-start p-[23px] flex-col ">
           <span className="text-5xl font-serif ">Who We Are?</span>
           <p className="mt-3 text-xl font-sen sm:p-3 p-1">
-          Yuva Pragati is a young emerging firm in the global market
+            Yuva Pragati is a young emerging firm in the global market
             providing independent platform for emerging leaders for the field of
             service and management in this competitive market. Yuva Pragati
-             is one of the largest face to face advertising company
+            is one of the largest face to face advertising company
             working with multiple clients from the fortune 500 companies. We are
             part of Global network where already we have office in 32 country
             with more than 1200 offices around the world. Now we are looking for
@@ -41,16 +41,16 @@ const About = () => {
           </p>
         </div>
       </div>
-      <h1 className="text-3xl font-normal p-3 ">Business Head</h1>
+      {/* <h1 className="text-3xl font-normal p-3 ">Business Head</h1> */}
       <div className="grid sm:grid-cols-2 p-2  ">
         <img
           className=" shadow-lg   grid row-span-2 md:h-[600px] md:w-[100%]  object-contain h-[100%]  object-cover"
-          // src="./image/sonu.jpg"
+          src="./image/manaDir.jpg"
           alt="md"
         />
         <span className="md:text-2xl text-lg font-normal font-serif text-[gray] p-2">
           {" "}
-          Managing Director 
+          Managing Director MR RAMESH
         </span>
         <p className="p-3 text-lg font-sen md:text-2xl md:text-center ">
           After completing my BTech CSE was looking for a career where I can live
@@ -64,7 +64,12 @@ const About = () => {
           across Tamilnadu where i can provide this opportunity to more leader
           who can use this opportunity to build there carrier i believe
           everything is possible to achieve in life if u keep trying until you
-          achieve .
+          achieve . By following the system of the company I
+          developed my skills by working hard which helped me to run a
+          successful business unit in Trichy and looking for expansion in all
+          across Tamilnadu where i can can have more to more leader
+          who can use this opportunity to build there carrier i believe
+          everything is possible to achieve in life if u keep until you achieve .
         </p>
         {/* <div className="w-[100%]  mt-4 flex sm:flex-row justify-center items-center flex-wrap">
           <h3 className=" text-3xl font-normal font-serif text-center">
@@ -73,8 +78,8 @@ const About = () => {
         </div> */}
       </div>
 
-    
-      
+
+
       <Footer />
     </>
   );

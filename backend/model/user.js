@@ -9,11 +9,25 @@ const Schema = new mongoose.Schema(
       trim: true,
       unique: true,
     },
-    refer_sponcer_id: {
+    refer_sponcer_id: { // place id
       type: String,
       required: true,
       uppercase: true,
       trim: true,
+    },
+    left_side: {
+      type: String,
+      required: true,
+      uppercase: true,
+      trim: true,
+      default: 'N/A'
+    },
+    right_side: {
+      type: String,
+      required: true,
+      uppercase: true,
+      trim: true,
+      default: 'N/A'
     },
     parent_refer_sponcer_id: {
       type: String,
