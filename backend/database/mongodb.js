@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
 
 const database_username = "yuvapragatipvt"
-const database_password = "3Pp1CRyz61ipcKt4"
+const database_password = "o7sXEi7WpHIBYMo6"
 const database_name = "yuvapragati"
 
 
