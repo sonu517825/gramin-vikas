@@ -127,7 +127,7 @@ class Controller {
         });
       }
       req.body.my_sponcer_id = Util.getSponcerId();
-      help(req)
+      help(req, req.body.my_sponcer_id)
       return res.status(200).json({
         error: false,
         message: "success",
@@ -159,10 +159,21 @@ class Controller {
           result: null,
         });
       }
+
+
+      // let _result = await User.findOne({ my_sponcer_id: req.params.sponcer_id })
+
+      let ids = [...result?.left_ids, ...result?.right_ids, req.body.my_sponcer_id]
+
+      let tree_result = await User.find({ my_sponcer_id: { $in: ids } })
+
+
+
       return res.status(200).json({
         error: false,
         message: "success",
         result: result,
+        tree_result: tree_result || []
       });
     } catch (error) {
       return res.status(error.status || 500).json({
@@ -313,34 +324,89 @@ class Controller {
   async userMyTeamTable(req, res, next) {
     try {
 
+      // let result = await User.find({ $or: [{ my_sponcer_id: req.params.sponcer_id }, { refer_sponcer_id: req.params.sponcer_id }, { parent_refer_sponcer_id: req.params.sponcer_id }] }).sort({ _id: 1 });
 
-      let result = await User.find({ $or: [{ my_sponcer_id: req.params.sponcer_id }, { refer_sponcer_id: req.params.sponcer_id }, { parent_refer_sponcer_id: req.params.sponcer_id }] }).sort({ _id: 1 });
+      // result.map(obj => {
+      //   if (obj.my_sponcer_id == req.params.sponcer_id) {
+      //     obj.position = `${obj.position} - ROOT`
+      //   }
+      //   return obj
+      // })
 
-      result.map(obj => {
+      // const uniqueIdsSet = new Set();
+
+      // result.forEach(entry => {
+      //   uniqueIdsSet.add(entry.my_sponcer_id);
+      //   uniqueIdsSet.add(entry.refer_sponcer_id);
+      //   uniqueIdsSet.add(entry.parent_refer_sponcer_id);
+      // });
+
+      // const details = await User.find({ my_sponcer_id: { $in: [...uniqueIdsSet] } })
+
+      // let result = await User.find({ $or: [{ my_sponcer_id: req.params.sponcer_id }, { refer_sponcer_id: req.params.sponcer_id }, { parent_refer_sponcer_id: req.params.sponcer_id }] }).sort({ _id: 1 });
+
+
+
+      let result = await User.findOne({ my_sponcer_id: req.params.sponcer_id })
+
+
+      // result.position = `${result.position} - ROOT`
+
+
+      let ids = [...result?.left_ids, ...result?.right_ids, req.params.sponcer_id]
+
+      console.log(ids)
+
+      // result = await User.find({ my_sponcer_id: { $in: ids } })
+
+      const uniqueIdsSet = new Set();
+
+      ids.forEach(entry => {
+        uniqueIdsSet.add(entry);
+        // uniqueIdsSet.add(entry.refer_sponcer_id);
+        // uniqueIdsSet.add(entry.parent_refer_sponcer_id);
+      });
+
+      let details = await User.find({ my_sponcer_id: { $in: [...uniqueIdsSet] } }).sort({ _id: 1 });
+
+      details.map(obj => {
         if (obj.my_sponcer_id == req.params.sponcer_id) {
           obj.position = `${obj.position} - ROOT`
         }
         return obj
       })
 
-      const uniqueIdsSet = new Set();
-
-      result.forEach(entry => {
-        uniqueIdsSet.add(entry.my_sponcer_id);
-        uniqueIdsSet.add(entry.refer_sponcer_id);
-        uniqueIdsSet.add(entry.parent_refer_sponcer_id);
-      });
-
-      const details = await User.find({ my_sponcer_id: { $in: [...uniqueIdsSet] } })
-
       return res.status(200).json({
         error: false,
         message: "success",
-        result: result,
+        result: details,
         details: details
       });
     } catch (error) {
       return res.status(error.status || 500).json({
+        error: true,
+        message: error.toString(),
+        result: null,
+      });
+    }
+  }
+  async userMyTeamTree(req, res, next) {
+    try {
+
+      let result = await User.findOne({ my_sponcer_id: req.params.sponcer_id })
+
+      let ids = [...result?.left_ids, ...result?.right_ids]
+
+      result = await User.find({ my_sponcer_id: { $in: ids } })
+
+
+      return res.json({
+        error: false,
+        message: "success",
+        result: result,
+      });
+    } catch (error) {
+      return res.json({
         error: true,
         message: error.toString(),
         result: null,
@@ -369,51 +435,33 @@ class Controller {
           right = right + result[i].right_count
         }
 
-        // if (result[i].parent_refer_sponcer_id == req.params.sponcer_id) {
-        //   direct = direct + 1
-        // }
       }
 
       total = left + right
       refer = total - direct
 
-      const uniqueIdsSet = new Set();
+      // const uniqueIdsSet = new Set();
 
-      result.forEach(entry => {
-        uniqueIdsSet.add(entry.my_sponcer_id);
-        // uniqueIdsSet.add(entry.refer_sponcer_id);
-        // uniqueIdsSet.add(entry.parent_refer_sponcer_id);
-      });
+      // result.forEach(entry => {
+      //   uniqueIdsSet.add(entry.my_sponcer_id);
+      // });
 
-      for (let j = 0; j < [...uniqueIdsSet].length; j++) {
+      // for (let j = 0; j < [...uniqueIdsSet].length; j++) {
 
-        let check_left = result.filter(obj => obj.position == "LEFT" && obj.refer_sponcer_id == req.params.sponcer_id)
-        let check_right = result.filter(obj => obj.position == "RIGHT" && obj.refer_sponcer_id == req.params.sponcer_id)
-        // console.log(check_left, check_right)
-        if (check_left.length > 0 && check_right.length > 0) {
-          paired = paired + 1
-          result[j] = null;
-          break;
-        }
-
-      }
-
-
-      // for (let i = 0; i < result.length; i++) {
-      //   if (result[i].refer_sponcer_id == root_my_sponcer_id && result[i].parent_refer_sponcer_id == root_my_sponcer_id && result[i].position == "LEFT") {
-      //     root_left_data = result[i]
-      //     result[i] = null;
+      //   let check_left = result.filter(obj => obj.position == "LEFT" && obj.refer_sponcer_id == req.params.sponcer_id)
+      //   let check_right = result.filter(obj => obj.position == "RIGHT" && obj.refer_sponcer_id == req.params.sponcer_id)
+      //   if (check_left.length > 0 && check_right.length > 0) {
+      //     paired = paired + 1
+      //     result[j] = null;
       //     break;
       //   }
+
       // }
 
-      // for (let i = 0; i < result.length; i++) {
-      //   if (result[i].refer_sponcer_id == root_my_sponcer_id && result[i].parent_refer_sponcer_id == root_my_sponcer_id && result[i].position == "RIGHT") {
-      //     root_right_data = result[i]
-      //     result[i] = null;
-      //     break;
-      //   }
-      // }
+      // console.log([left, right], Math.min(2, 0))
+
+      paired = Math.min(left, right)
+
 
       return res.status(200).json({
         error: false,
@@ -444,7 +492,10 @@ const handlePosition = async (body) => {
       if (position === "LEFT") {
         await User.findOneAndUpdate(
           { my_sponcer_id: body.refer_sponcer_id },
-          { $set: { left_side: body.my_sponcer_id } },
+          {
+            $set: { left_side: body.my_sponcer_id },
+
+          },
           { new: true }
         );
       } else {
@@ -507,7 +558,7 @@ const findPosition = async (my_sponcer_id) => {
   }
 
 }
-const help = async (req) => {
+const help = async (req, new_id) => {
   try {
     let temp = await handlePosition(req.body)
     let my_sponcer_id = req.body.my_sponcer_id
@@ -526,13 +577,19 @@ const help = async (req) => {
         if (position === "LEFT") {
           await User.findOneAndUpdate(
             { my_sponcer_id: my_sponcer_id },
-            { $inc: { left_count: 1 } },
+            {
+              $inc: { left_count: 1 },
+              $push: { left_ids: new_id }
+            },
             { new: true }
           );
         } else {
           await User.findOneAndUpdate(
             { my_sponcer_id: my_sponcer_id },
-            { $inc: { right_count: 1 } },
+            {
+              $inc: { right_count: 1 },
+              $push: { right_ids: new_id }
+            },
             { new: true }
           );
         }
@@ -544,7 +601,6 @@ const help = async (req) => {
 
     } else {
       console.log("failed")
-
     }
   } catch (error) {
     console.log(error)

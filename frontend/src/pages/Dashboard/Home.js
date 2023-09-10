@@ -43,6 +43,11 @@ const Home = () => {
   const location = useLocation();
   // const payload = location.state?.result;
   const [payload, setPayload] = useState(location.state?.result);
+  const [payload_tree, setPayload_tree] = useState(location.state?.tree_result || []);
+
+  const tree_comp = {
+    payload, payload_tree
+  }
 
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
@@ -160,7 +165,7 @@ const Home = () => {
             <Dashboard payload={payload} />
           )}
           {activeMenuItem === '/dashboard/team/tree' && (
-            <TreeView />
+            <TreeView message={tree_comp} />
           )}
           {activeMenuItem === '/dashboard/team/table' && (
             <MyTeam message={payload} />

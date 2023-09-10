@@ -3,7 +3,8 @@ mongoose.set("strictQuery", true);
 
 const database_username = "yuvapragatipvt"
 const database_password = "o7sXEi7WpHIBYMo6"
-const database_name = "yuvapragati"
+const database_name = "yuvapragati" // PROD
+// const database_name = "dev_yuvapragati" // dev
 
 
 

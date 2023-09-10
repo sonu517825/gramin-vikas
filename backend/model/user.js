@@ -17,17 +17,17 @@ const Schema = new mongoose.Schema(
     },
     left_side: {
       type: String,
-      required: true,
+      required: false,
       uppercase: true,
       trim: true,
-      default: 'N/A'
+      default: null
     },
     right_side: {
       type: String,
-      required: true,
+      required: false,
       uppercase: true,
       trim: true,
-      default: 'N/A'
+      default: null
     },
     parent_refer_sponcer_id: {
       type: String,
@@ -104,6 +104,16 @@ const Schema = new mongoose.Schema(
       type: Number,
       required: false,
       default: 0,
+    },
+    left_ids: {
+      type: Array,
+      required: false,
+      default: [],
+    },
+    right_ids: {
+      type: Array,
+      required: false,
+      default: [],
     },
     date_of_birth: {
       type: String,

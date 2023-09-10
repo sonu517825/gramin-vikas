@@ -11,6 +11,7 @@ router.put("/user/update", Controller.userUpdate);
 router.put("/user/password/update", Controller.userPasswordUpdate);
 router.get("/user/my-team/:sponcer_id", Controller.userMyTeam);
 router.get("/user/my-team/table/:sponcer_id", Controller.userMyTeamTable);
+router.get("/user/my-team/tree/:sponcer_id", Controller.userMyTeamTree);
 router.get("/user/my-team/count/:sponcer_id", Controller.userMyTeamCount);
 
 module.exports = router;
